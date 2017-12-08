@@ -89,14 +89,14 @@ c1 = np.full(237, mc, dtype="float64")
 M1 = np.append('Total M', c1)
 
 lc1 = np.full(237, lc, dtype="float64")
-L1 = np.append('Total M', lc1)
+L1 = np.append('Total L', lc1)
 
 if more == 'yes':
     c2 = np.full(237, mc_2, dtype="float64")
     M2 = np.append('Total M', c2)
     
     lc2 = np.full(237, lc_2, dtype="float64")
-    L2 = np.append('Total M', lc2)
+    L2 = np.append('Total L', lc2)
 
     out = np.vstack((Id, path, M1, L1, M2, L1, pH, spectra))
 # Append Id, path, pH, Metal, Ligand concentrations and spectra
