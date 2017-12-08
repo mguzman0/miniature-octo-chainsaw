@@ -12,9 +12,14 @@ import matplotlib.pyplot as plt
 
 
 data = np.loadtxt("pH.txt",skiprows=1)
-extra = np.loadtxt("pH.txt", usecols=range(3,1287))
+last = data[1,:].size
+extra = np.loadtxt("pH.txt", usecols=range(3,last))
 data = data.T
 row1 = extra[0,:].T
+row1 = row1.reshape(row1.size,1)
+
+#TODO: have program check for even file and tell
+#      user to fill in empty spots manually
 
 ##############################################
 ###               Analysis                 ###
@@ -37,6 +42,7 @@ data[1,:] = data[1,:]*df
 ###               User input               ###
 ##############################################
 
+#TODO: dummy proof the user input
 metal_1 = raw_input(
         "What is the name of the metal used?\n" )
 
@@ -77,9 +83,7 @@ path = np.append('path', p)
 
 pH = np.append('pH', data[2,:])
 
-spectra = np.hstack((row1, data[3:,:]))
-print data[3:,:].shape
-print spectra.shape
+spectra = np.hstack((data[3:,:], row1))
 
 c1 = np.full(237, mc, dtype="float64")
 M1 = np.append('Total M', c1)
@@ -94,7 +98,9 @@ if more == 'yes':
     lc2 = np.full(237, lc_2, dtype="float64")
     L2 = np.append('Total M', lc2)
 
-exit()
-array_size = data[0,:].size
-np.set_printoptions(threshold=array_size)
-np.savetxt('dum.txt', data)
+    out = np.vstack((Id, path, M1, L1, M2, L1, pH, spectra))
+# Append Id, path, pH, Metal, Ligand concentrations and spectra
+else:
+    out = np.vstack((Id, path, M1, L1, pH, spectra))
+#TODO: Fromating, first element should be more to the right
+np.savetxt('dum.txt', out, fmt='%5s')
