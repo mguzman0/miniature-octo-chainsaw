@@ -18,9 +18,6 @@ data = data.T
 row1 = extra[0,:].T
 row1 = row1.reshape(row1.size,1)
 
-#TODO: have program check for even file and tell
-#      user to fill in empty spots manually
-
 ##############################################
 ###               Analysis                 ###
 ##############################################
@@ -31,8 +28,12 @@ deltaV = data[1,1] - data[1,0]
 
 data[2,0] = data[2,1] * .99
 
-v1 = input("What is the initial volume?\n")
-print " "
+while True:
+    try:
+        v1 = float(raw_input("What is the initial volume?\n"))
+        break
+    except ValueError:
+        print "That is not a valid number. Try again...\n"
 
 v = data[1,:]
 df = (v1 + v) / v1
@@ -42,34 +43,52 @@ data[1,:] = data[1,:]*df
 ###               User input               ###
 ##############################################
 
-#TODO: dummy proof the user input
-metal_1 = raw_input(
-        "What is the name of the metal used?\n" )
+while True:
+    try:
+        metal_1 = raw_input(
+         "What is the name of the metal used?\n" )
 
-mc = input(
-        "What is the concentration of " +metal_1+ "?\n" )
+        mc = float(raw_input(
+         "What is the concentration of " +metal_1+ "?\n"))
 
-ligand_1 = raw_input(
-        "What is the name of the ligand used?\n" )
+        ligand_1 = raw_input(
+         "What is the name of the ligand used?\n" )
 
-lc = input(
-        "What is the concentration of " +ligand_1+ "?\n" ) 
+        lc = float(raw_input(
+         "What is the concentration of " +ligand_1+ "?\n")) 
+        break
+    except ValueError:
+        print "That is not a valid number. Start from the begining..."
+        text = raw_input("Press any key to continue.\n")
 
-more = raw_input(
-        "Is there another other metal and ligand concentrations?\n"
-        "Type yes or no.\n")
+while True: 
+    more = raw_input(
+         "Are there any other metal and ligand concentrations?\n"
+         "Type yes or no.\n")
+    if more == 'yes' or more == 'no':
+        break
 
 if more == 'yes':
-    metal_2 = raw_input(
-         "What is the name of the metal used?\n" )
+    while True:
+        try:
+            metal_2 = raw_input(
+              "What is the name of the second metal used?\n" )
          
-    mc_2 = input(
-         "What is the concentration of " +metal_2+ "?\n" )
+            mc_2 = float(raw_input(
+              "What is the concentration of "
+                            +metal_2+ "?\n"))
  
-    ligand_2 = raw_input(
-         "What is the name of the ligand used?\n" )
-    lc_2 = input(
-         "What is the concentration of " +ligand_2+ "?\n" )
+            ligand_2 = raw_input(
+              "What is the name of the second ligand used?\n" )
+
+            lc_2 = float(raw_input(
+              "What is the concentration of "
+                            +ligand_2+ "?\n"))
+            break
+        except ValueError:
+            print "That is not a valid number." 
+            print "Start from the begining..."
+            text =raw_input("Press any key to continue.\n")
 
 #############################################
 ###                Output                 ###
@@ -102,5 +121,5 @@ if more == 'yes':
 # Append Id, path, pH, Metal, Ligand concentrations and spectra
 else:
     out = np.vstack((Id, path, M1, L1, pH, spectra))
-#TODO: Fromating, first element should be more to the right
+
 np.savetxt('dum.txt', out, fmt='%5s')
